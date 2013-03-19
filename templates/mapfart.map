@@ -1,0 +1,87 @@
+# Mapfile for MapFart
+MAP
+  NAME "MapFart"
+  UNITS DD
+  IMAGETYPE PNG
+  PROJECTION 
+    "init=epsg:{{srid}}"
+  END
+  WEB
+    IMAGEPATH "/home/projects/mapfart/tmp/"
+    IMAGEURL "/tmp/"
+  END
+  SHAPEPATH      "/tmp"
+  CONFIG "MS_ERRORFILE" "/home/projects/mapfart.com/ms_error.txt"
+  SYMBOL
+    NAME "circle"
+    TYPE ellipse
+    FILLED true
+    POINTS
+      1 1
+    END
+  END
+
+  LAYER
+    NAME "polygons"
+    CONNECTIONTYPE OGR
+    CONNECTION "{{polygon_name}}"
+    PROJECTION
+      "init=epsg:4326"
+    END
+    TYPE polygon
+    STATUS ON
+    OPACITY 100
+    CLASS
+      NAME "default"
+      STYLE
+        OPACITY 100
+	OUTLINECOLOR 0 0 0
+        WIDTH 2
+      END # END STYLE
+      STYLE
+        OPACITY 20
+        COLOR 201 0 0
+      END # END STYLE
+    END # END CLASS
+  END # END LAYER
+
+  LAYER
+    NAME "lines"
+    CONNECTIONTYPE OGR
+    CONNECTION "{{line_name}}"
+    PROJECTION
+      "init=epsg:4326"
+    END
+    TYPE line
+    STATUS ON
+    OPACITY 100
+    CLASS
+      NAME "default"
+      STYLE
+        WIDTH 2
+        COLOR 0 0 100
+      END # END STYLE
+    END # END CLASS
+  END # END LAYER
+
+  LAYER
+    NAME "points"
+    CONNECTIONTYPE OGR
+    CONNECTION "{{point_name}}"
+    PROJECTION
+      "init=epsg:4326"
+    END
+    TYPE point
+    STATUS ON
+    OPACITY 100
+    CLASS
+      NAME "default"
+      STYLE
+	SYMBOL "circle"
+        SIZE 10
+        COLOR 101 101 100
+      END # END STYLE
+    END # END CLASS
+  END # END LAYER
+
+END # END MAP
