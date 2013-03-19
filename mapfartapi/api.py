@@ -6,6 +6,7 @@ import json
 import re
 import subprocess
 import tempfile
+import math
 
 from utils.jsonp import jsonp
 from shapely.geometry import shape
@@ -164,7 +165,7 @@ def process_geojson(js, srid, xsize, ysize):
         try:
             conn=psycopg2.connect(connstring)
             cursor=conn.cursor()
-            sql = "select st_x(st_transform(st_geometryfromtext('POINT(%s %s)',4326),%s)) as xmin, st_y(st_transform(st_geometryfromtext('POINT(%s %s)',4326),%s)) as ymin, st_x(st_transform(st_geometryfromtext('POINT(%s %s)',4326),%s)) as xmax, st_y(st_transform(st_geometryfromtext('POINT(%s %s)',4326),%s)) as ymax" % (bbox[0],bbox[1],srid,bbox[0],bbox[1],srid,bbox[2],bbox[3],srid,bbox[2],bbox[3],srid)
+            sql = "select st_x(st_transform(st_geometryfromtext('POINT(%s %s)',4326),%s)) as xmin, st_y(st_transform(st_geometryfromtext('POINT(%s %s)',4326),%s)) as ymin, st_x(st_transform(st_geometryfromtext('POINT(%s %s)',4326),%s)) as xmax, st_y(st_transform(st_geometryfromtext('POINT(%s %s)',4326),%s)) as ymax" % (bbox[0],bbox[1],str(srid),bbox[0],bbox[1],str(srid),bbox[2],bbox[3],str(srid),bbox[2],bbox[3],str(srid))
             cursor.execute(sql)
             results = cursor.fetchone()                
             bbox_string = " ".join(str(b) for b in results)
@@ -176,9 +177,12 @@ def process_geojson(js, srid, xsize, ysize):
     # Monkey with the image size to get the aspect ratio about the same as the extent of the data
     data_aspect = ((bbox[2] - bbox[0])/2) / (bbox[3] - bbox[1])
     if data_aspect>=1:
-        ysize = float(xsize) / data_aspect
+        ysize = math.trunc(float(xsize) / data_aspect)
     else:
-        xsize = float(ysize) * data_aspect
+        xsize = math.trunc(float(ysize) * data_aspect)
+
+    # Testing debug
+    #return jsonify({'xsize':xsize, 'ysize':ysize, 'srid':srid})
 
     tf_points = tempfile.NamedTemporaryFile(prefix='fart_pt_', suffix='.json', delete=False)
     tf_lines = tempfile.NamedTemporaryFile(prefix='fart_ln_', suffix='.json', delete=False)
@@ -205,7 +209,7 @@ def process_geojson(js, srid, xsize, ysize):
     mapfile = render_template("mapfart.map", point_name = tf_points.name,
                               line_name = tf_lines.name,
                               polygon_name = tf_polygons.name,
-                              srid = srid)
+                              srid = str(srid))
     tf_mapfile = tempfile.NamedTemporaryFile(prefix='fart_', suffix='.map', delete=False)
     tf_mapfile.write(mapfile)
     tf_mapfile.flush()
@@ -215,6 +219,7 @@ def process_geojson(js, srid, xsize, ysize):
     
     try:
         cmd = "/usr/local/bin/shp2img -m %s -o %s -l '%s' -s %s %s -e %s" % (tf_mapfile.name, tf_png.name, layers_to_draw.strip(), str(xsize), str(ysize), bbox_string)
+        #return jsonify({'cmd':cmd})
         proc = subprocess.Popen(
             cmd,
             shell=True,

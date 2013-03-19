@@ -11,7 +11,7 @@ MAP
     IMAGEURL "/tmp/"
   END
   SHAPEPATH      "/tmp"
-  CONFIG "MS_ERRORFILE" "/home/projects/mapfart.com/ms_error.txt"
+  CONFIG "MS_ERRORFILE" "/tmp/ms_error.txt"
   SYMBOL
     NAME "circle"
     TYPE ellipse
