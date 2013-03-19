@@ -4,27 +4,18 @@
     <meta charset="utf-8">
     <title>mapfart.com &middot; Mapfart API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="z-pulley, gis, spatial">
+    <meta name="description" content="aaron, racicot, z-pulley, gis, spatial">
     <meta name="author" content="Aaron Racicot">
-
-    <!-- Le styles -->
     <link href="/static/css/bootstrap.css" rel="stylesheet">
     <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="/static/css/projfinder.css" rel="stylesheet">
+    <link href="/static/css/mapfart.css" rel="stylesheet">
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
-    <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/static/apple-touch-icon-144x144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/static/apple-touch-icon-114x114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/static/apple-touch-icon-72x72-precomposed.png">
-                    <link rel="apple-touch-icon-precomposed" href="/static/apple-touch-icon-57x57-precomposed.png">
-                                   <link rel="shortcut icon" href="/static/favicon.png">
+    <link rel="shortcut icon" href="/static/favicon.png">
   </head>
   <body>
-    <!-- NAVBAR ================================================== -->
     <div class="navbar-wrapper">
       <div class="container">
         <div class="navbar navbar-inverse">
@@ -38,24 +29,70 @@
             <div class="nav-collapse collapse">
               <ul class="nav">
                 <li class="active"><a href="#">Home</a></li>
-                <li><a href="http://mapfart.com">mapfart.com</a></li>
+                <li><a href="http://mapfart.com/recent">Recent Farts</a></li>
               </ul>
             </div><!--/.nav-collapse -->
           </div><!-- /.navbar-inner -->
         </div><!-- /.navbar -->
       </div> <!-- /.container -->
     </div><!-- /.navbar-wrapper -->
+    
 
+    <!-- MAIN CONTENT -->
+    <div class="maincontent">
+      <div class="container">
+	<h2>What the hell is a <span class="muted">mapfart?</span></h2>
+	<h3><i>A simple web service to take a geodata POST and <span class="muted">try</span> to make a map from it.</i></h3>
+	<h2>What do I need to <span class="muted">install</span> to use it?</h2>
+	<h3><i>Nothing... it just uses <span class="muted">Curl</span></i></h3>
+	<h2>What the hell is <span class="muted">Curl?</span></h2>
+	<h3><i>This service might not be for you...</i></h3>
+	<h2>When might this be <span class="muted">useful?</span></h2>
+	<h3><i>In a <span class="muted">headless situation</span> (i.e. on a remote server) where you want to <span class="muted">preview</span> the geodata...</i></h3>
+	<h3><i>Then again... maybe it is totally useless...</i></h3>
+	<h2>What do I <span class="muted">get?</span></h2>
+	<h3><i>Nothing... you POST.  All kidding aside, you get a PNG image back.</i></h3>
+	<br>
+	<h2><span class="muted">Set it up</span> please:</h2>
+	<h3>Simple (default)</h3>
+	<pre>
+alias mapfart='curl -H "Content-Type: application/octet-stream" --data-binary @- mapfart.com/api/fart'
+	</pre>
+	<h3>Crunchy (change output projection) (example EPSG:3857)</h3>
+	<pre>
+alias mapfart='curl -H "Content-Type: application/octet-stream" --data-binary @- mapfart.com/api/3857/fart'
+	</pre>
+	<h3>Hipster (change output projection AND mapsize) (example EPSG:3857, 2000x2000px)</h3>
+	<pre>
+alias mapfart='curl -H "Content-Type: application/octet-stream" --data-binary @- mapfart.com/api/3857/2000/2000/fart'
+	</pre>
+	<br>
+	<br>
+	<h2><span class="muted">Examples</span> please:</h2>
 
-      <!-- FOOTER -->
-      <footer>
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>&copy; 2013 CUGOS &middot; <!-- <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a> --> </p>
-      </footer>
+	<h3>Simple file</h3>
+	<script src="https://gist.github.com/aaronr/5199177.js"></script>
+	<pre>
+z-air:~ aaronr$ cat geojson.json | mapfart
 
-    </div><!-- /.container -->
+http://mapfart.com/fart_7ZDlTc	
+	</pre>
 
+	<h3>Local Shapefile via ogr2ogr</h3>
+	<pre>
+z-air:~ aaronr$ ogr2ogr -f GeoJSON /vsistdout/ ne_110m_admin_0_countries.shp -sql "select * from ne_110m_admin_0_countries where name='United States'" | mapfart
 
+http://mapfart.com/fart_hfNVya
+	</pre>
+
+      </div>    
+    </div>    
+
+    <!-- FOOTER -->
+    <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+      <p>&copy; 2013 Aaron Racicot &middot;</p>
+    </footer>
 
     <!-- Javascript  ====================================== -->
     <script src="/static/js/jquery.js"></script>
@@ -71,13 +108,5 @@
     <script src="/static/js/bootstrap-collapse.js"></script>
     <script src="/static/js/bootstrap-carousel.js"></script>
     <script src="/static/js/bootstrap-typeahead.js"></script>
-    <script>
-      !function ($) {
-        $(function(){
-          // carousel demo
-          $('#myCarousel').carousel()
-        })
-      }(window.jQuery)
-    </script>
   </body>
 </html>

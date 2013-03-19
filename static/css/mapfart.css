@@ -4,6 +4,8 @@
 
 body {
   padding-bottom: 40px;
+  padding-left: 40px;
+  padding-right: 40px;
   color: #5a5a5a;
 }
 
@@ -53,6 +55,11 @@ body {
 }
 
 
+/* Carousel base class */
+.maincontent .container {
+  padding-top: 100px;
+  margin-bottom: 60px;
+}
 
 /* CUSTOMIZE THE NAVBAR
 -------------------------------------------------- */
