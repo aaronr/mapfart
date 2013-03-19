@@ -9,6 +9,8 @@ from mapfartapi.web import index, documentation, api_landing
 from mapfartapi.api import fart, fart_srid, fart_srid_xy, fart_default
 # The fart serve code
 from mapfartapi.api import fart_serve
+# The recent fart code
+from mapfartapi.api import fart_recent
 # Testing...
 from mapfartapi.api import testcurl
 
@@ -22,6 +24,8 @@ app.config.from_pyfile('local.cfg')
 app.add_url_rule('/', 'index', index)
 # Fart Serve
 app.add_url_rule('/fart_<fart_id>', 'fart_serve', fart_serve, methods=['GET'])
+# Recent Farts
+app.add_url_rule('/recent', 'fart_recent', fart_recent, methods=['GET'])
 # Building farts
 # Default farts
 app.add_url_rule('/api/fart', 'fart_default', fart_default, methods=['POST'])

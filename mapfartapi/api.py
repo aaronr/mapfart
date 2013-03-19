@@ -2,6 +2,8 @@ from flask import abort, request, render_template, jsonify, send_file
 import psycopg2
 import sys
 import os
+import time
+import glob
 import json
 import re
 import subprocess
@@ -20,6 +22,19 @@ def fart_serve(fart_id):
         try:
             tf = open("/tmp/fart_"+fart_id+".png", "r")
             return send_file(tf, mimetype='image/png')
+        except Exception, e:            
+            abort(404)
+    abort(404)
+
+def fart_recent():
+    if request.method == 'GET':
+        try:
+            search_dir = "/tmp/"
+            files = filter(os.path.isfile, glob.glob(search_dir + "fart_*.png"))
+            files.sort(key=lambda x: os.path.getmtime(x))
+            files = [[os.path.splitext(os.path.basename(tf))[0],time.ctime(os.path.getmtime(tf))] for tf in files]
+            return render_template("recent.html", files = files[-20:])            
+            #return jsonify({'files':' '.join(f for f in files)})
         except Exception, e:            
             abort(404)
     abort(404)
