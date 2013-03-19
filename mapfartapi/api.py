@@ -62,7 +62,7 @@ def fart(srid=4326, xsize=800, ysize=800):
                 data = data[1:]
             return process_wkt(data,xsize,ysize)
         # WKB Payload
-        elif re.match(r'^[01]*$',data.strip()):
+        elif re.match(r'^[0-9A-F]+$',data.strip()):
             return process_wkb(data,xsize,ysize)
 
         else:
