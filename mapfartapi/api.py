@@ -39,7 +39,7 @@ def fart_srid_xy(srid,xsize,ysize):
         return fart(srid=srid, xsize=xsize, ysize=ysize)
 
 @jsonp
-def fart(srid='4326', xsize='800', ysize='600'):
+def fart(srid=4326, xsize=800, ysize=800):
     # Only POST is accepted
     if request.method == 'POST':
         data = request.data
