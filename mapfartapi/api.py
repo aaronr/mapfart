@@ -70,7 +70,7 @@ def fart(srid=4326, xsize=800, ysize=800):
             except Exception, e:            
                 abort(404)
         # WKT Payload
-        elif re.match(r'^[PLM\"]',data):
+        elif re.match(r'^[PLMG\"]',data):
             # Strip off "'s if they are there
             if data.endswith("\""):
                 data = data[:-1]
