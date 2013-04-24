@@ -81,56 +81,48 @@ alias mapfart='curl -H "Content-Type: application/octet-stream" --data-binary @-
 	<pre>
 z-air:~ aaronr$ cat geojson.json | mapfart
 	</pre>
-	<a href="http://mapfart.com/fart_X5GA2T">http://mapfart.com/fart_X5GA2T</a>	
 
 	<hr class="featurette-divider">
 	<h3>Local Shapefile via ogr2ogr</h3>
 	<pre>
 z-air:~ aaronr$ ogr2ogr -f GeoJSON /vsistdout/ ne_110m_admin_0_countries.shp -sql "select * from ne_110m_admin_0_countries where name='United States'" | mapfart
 	</pre>
-	<a href="http://mapfart.com/fart_WbCWfv">http://mapfart.com/fart_WbCWfv</a>
 
 	<hr class="featurette-divider">
 	<h3>Remote Shapefile via ogr2ogr</h3>
 	<pre>
 z-air:~ aaronr$ ogr2ogr -f GeoJSON /vsistdout/ /vsizip/vsicurl/http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_countries.zip/ne_110m_admin_0_countries.shp -sql "select * from ne_110m_admin_0_countries where name='United States' or name='Germany'" | mapfart
 	</pre>
-	<a href="http://mapfart.com/fart_qBUfbc">http://mapfart.com/fart_qBUfbc</a>
 
 	<hr class="featurette-divider">
 	<h3>Postgis via ogr2ogr</h3>
 	<pre>
 z-air:~ aaronr$ ogr2ogr -f "GeoJSON" /vsistdout/ PG:dbname=test ne_admin_bounds -where "name = 'United States'" | mapfart
 	</pre>
-	<a href="http://mapfart.com/fart_TcFyUG">http://mapfart.com/fart_TcFyUG</a>
 
 	<hr class="featurette-divider">
 	<h3>WKT as text</h3>
 	<pre>
 z-air:~ aaronr$ echo 'LINESTRING(3 4,10 50,20 25)' | mapfart
 	</pre>
-	<a href="http://mapfart.com/fart_PSan60">http://mapfart.com/fart_PSan60</a>
 
 	<hr class="featurette-divider">
 	<h3>WKB as text (bbox of United States)</h3>
 	<pre>
 z-air:~ aaronr$ echo '0103000020E61000000100000005000000F8DD2EC7507965C020EC866D8BEA3240F8DD2EC7507965C08CAA3399E5D651409AF04BFDBCBD50C08CAA3399E5D651409AF04BFDBCBD50C020EC866D8BEA3240F8DD2EC7507965C020EC866D8BEA3240' | mapfart
 	</pre>
-	<a href="http://mapfart.com/fart_GhO0rG">http://mapfart.com/fart_GhO0rG</a>
 
 	<hr class="featurette-divider">
 	<h3>WKB (single shape) via psql</h3>
 	<pre>
 z-air:~ aaronr$ psql -A -t -c "select geom from ne_admin_bounds where name = 'United States'" testdb | mapfart
 	</pre>
-	<a href="http://mapfart.com/fart_9L4k9n">http://mapfart.com/fart_9L4k9n</a>
 
 	<hr class="featurette-divider">
 	<h3>WKT using <a href="http://jericks.github.com/geometrycommands/index.html">Geometry Commands</a></h3>
 	<pre>
 z-air:~ aaronr$ geom buffer -g 'LINESTRING(3 4,10 50,20 25)' -d 2 | mapfart
 	</pre>
-	<a href="http://mapfart.com/fart_2cvhqP">http://mapfart.com/fart_2cvhqP</a>
 
 
 
